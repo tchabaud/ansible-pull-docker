@@ -27,7 +27,8 @@
       lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=overlay --graph=/opt/docker"'
 #     lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=overlay"'
 #     lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=aufs"'
-    - blockinfile: |
+    - name: Add proxy environment variables to Docker configuration
+      blockinfile: |
         dest=/etc/default/docker backup=yes
         content='export http_proxy={{ ansible_env.http_proxy }}'
             export https_proxy={{ ansible_env.https_proxy }}
