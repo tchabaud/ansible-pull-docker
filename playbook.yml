@@ -27,9 +27,11 @@
       lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=overlay --graph=/opt/docker"'
 #     lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=overlay"'
 #     lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=aufs"'
-      lineinfile: dest=/etc/default/docker line='export http_proxy={{ ansible_env.http_proxy }}'
-      lineinfile: dest=/etc/default/docker line='export https_proxy={{ ansible_env.https_proxy }}'
-      lineinfile: dest=/etc/default/docker line='export no_proxy={{ ansible_env.no_proxy }}'
+      blockinfile: |
+        dest=/etc/default/docker
+        content='export http_proxy={{ ansible_env.http_proxy }}'
+            export https_proxy={{ ansible_env.https_proxy }}
+            export no_proxy={{ ansible_env.no_proxy }}'
     - name: Add account to the docker group
 #     user: name=vagrant groups=docker
       command: usermod -aG docker vagrant
